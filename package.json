@@ -1,0 +1,19 @@
+{
+  "name": "cordova-plugin-trusteer",
+  "version": "2.1.0",
+  "description": "The cordova plugin for IBM Trusteer.",
+  "cordova": {
+    "id": "com.trusteer.tas",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "author": "Lim Chun Hoong",
+  "license": "UNLICENSED"
+}

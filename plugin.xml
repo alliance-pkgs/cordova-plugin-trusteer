@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-trusteer" version="1.0.0"
+	xmlns="http://apache.org/cordova/ns/plugins/1.0"
+	xmlns="http://apache.org/cordova/ns/plugins/1.0"
+	xmlns="http://apache.org/cordova/ns/plugins/1.0"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<name>Trusteer</name>
+
+	<platform name="android">
+		<js-module name="Tas" src="src/android/www/tas.js">
+			<clobbers target="Tas" />
+		</js-module>
+		<config-file target="res/xml/config.xml" parent="/*">
+			<feature name="Tas">
+				<param name="android-package" value="com.trusteer.tas.phonegap.Tas" />
+			</feature>
+			<feature name="TasBoot">
+				<param name="android-package" value="com.alliance.trusteer.ApplicationTrusteerBootstrapper" />
+				<param name="onload" value="true" />
+			</feature>
+		</config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/*">
+			<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+			<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+			<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+			<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+			<uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions"
+				xmlns:tools="http://schemas.android.com/tools"/>
+		</config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+			<receiver android:name="com.trusteer.taz.service.TasIntentReceiver" android:exported="true">
+				<intent-filter>
+					<action android:name="android.intent.action.BOOT_COMPLETED" />
+				</intent-filter>
+			</receiver>
+
+			<!-- <service android:name="com.trusteer.taz.service.TasService"/> -->
+			<service android:name="com.trusteer.taz.service.TasService" android:permission="android.permission.BIND_JOB_SERVICE" />
+		</config-file>
+
+		<!-- LibC++ -->
+		<source-file src="src/android/libs/armeabi-v7a/libc++_shared.so" target-dir="libs/armeabi-v7a" framework="true"/>
+		<source-file src="src/android/libs/x86/libc++_shared.so" target-dir="libs/x86" framework="true"/>
+		<source-file src="src/android/libs/x86_64/libc++_shared.so" target-dir="libs/x86_64" framework="true"/>
+		<source-file src="src/android/libs/arm64-v8a/libc++_shared.so" target-dir="libs/arm64-v8a" framework="true"/>
+
+		<!-- Tas libs -->
+		<source-file src="src/android/libs/armeabi-v7a/libtaz_full.5.7.0.37.so" target-dir="libs/armeabi-v7a" framework="true" />
+		<source-file src="src/android/libs/arm64-v8a/libtaz_full.5.7.0.37.so" target-dir="libs/arm64-v8a" framework="true" />
+		<source-file src="src/android/libs/x86/libtaz_full.5.7.0.37.so" target-dir="libs/x86" framework="true" />
+		<source-file src="src/android/libs/x86_64/libtaz_full.5.7.0.37.so" target-dir="libs/x86_64" framework="true" />
+
+		<!-- Required Jar & Native Shared Libraries: -->
+		<source-file src="src/android/libs/Tas.java" target-dir="com/trusteer/tas/phonegap" framework="true"/>
+		<source-file src="src/android/libs/reflectutils.jar" target-dir="libs" framework="true"/>
+		<source-file src="src/android/libs/taz.jar" target-dir="libs" framework="true"/>
+
+		<source-file src="src/android/assets/default_conf.rpkg" target-dir="assets/" />
+		<source-file src="src/android/assets/manifest.rpkg" target-dir="assets/" />
+
+		<resource-file src="src/android/assets/proguard.cfg" target="proguard-trusteer.txt"/>
+
+		<source-file src="src/android/com/alliance/trusteer/Trusteer.java" target-dir="src/com/alliance/trusteer/" />
+		<source-file src="src/android/com/alliance/trusteer/ApplicationTrusteerBootstrapper.java" target-dir="src/com/alliance/trusteer/" />
+
+		<framework src="src/android/assets/build-trusteer.gradle" custom="true" type="gradleReference" />
+	</platform>
+
+	<platform name="ios">
+		<js-module name="Tas" src="src/ios/www/tas.js">
+			<clobbers target="Tas" />
+		</js-module>
+		<config-file parent="/*" target="config.xml">
+			<feature name="Tas">
+				<param name="ios-package" value="Tas" />
+			</feature>
+		</config-file>
+
+		<!-- <header-file src="src/ios/include/taslib.h" /> -->
+		<source-file src="src/ios/libs/libtas_phonegap_plugin.a" framework="true" />
+		<source-file src="src/ios/frameworks/tazSDK.xcframework/ios-arm64_armv7_armv7s/tazSDK.framework" target-dir="lib" framework="true" />
+		<framework src="src/ios/frameworks/tazSDK.xcframework/ios-arm64_armv7_armv7s/tazSDK.framework" embed="true" custom="true" />
+
+		<framework src="libz.dylib" />
+		<framework src="Foundation.framework" />
+		<framework src="CFNetwork.framework" />
+		<framework src="Security.framework" />
+		<framework src="libc++" />
+		<framework src="SystemConfiguration.framework" />
+		<framework src="CoreMotion.framework" />
+		<framework src="CoreTelephony.framework" />
+
+		<resource-file src="src/ios/tas" />
+	</platform>
+
+</plugin>
